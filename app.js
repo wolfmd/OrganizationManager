@@ -29,6 +29,8 @@ var meetingController = require('./controllers/meeting');
 var eventController = require('./controllers/event');
 var settingsController = require('./controllers/settings');
 
+var Settings = require('./models/Settings');
+
 /**
  * API keys + Passport configuration.
  */
@@ -125,6 +127,7 @@ app.post('/event/:id', eventController.postUpdate);
 app.get('/event/:id/:mnum', passportConf.isAuthenticated, eventController.postConfirmation);
 
 app.get('/settings',passportConf.isAuthenticated, settingsController.getSettings);
+app.post('/settings', passportConf.isAuthenticated, settingsController.postSettings);
 
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
@@ -204,5 +207,12 @@ app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '
 app.listen(app.get('port'), function() {
   console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
 });
+
+Settings.findOne(function(err, settings) {
+  app.locals.organization = settings.organizationName;
+  app.locals.eventsEnabled = settings.eventsEnabled;
+});
+
+app.locals.organization = 'CEAS Amb';
 
 module.exports = app;

@@ -13,6 +13,13 @@ block content
       .col-sm-7
         input.form-control(value="#{settings.organizationName}",type='text', name='organizationName', id='organizationName', placeholder='Student Organization', autofocus)
     .form-group
+      label.col-sm-3.control-label(for='organizationName') Events
+      .col-sm-7
+        if eventsEnabled
+          input.form-control(checked, type='checkbox', name='eventsEnabled', id='eventsEnabled')
+        else
+          input.form-control(type='checkbox', name='eventsEnabled', id='eventsEnabled')
+    .form-group
       .col-sm-offset-3.col-sm-7
         button.btn.btn-success(type='submit')
           i.fa.fa-check
