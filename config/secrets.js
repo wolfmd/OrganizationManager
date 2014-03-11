@@ -1,5 +1,5 @@
 module.exports = {
-  db: 'mongodb://localhost:27017/test',
+  db: 'mongodb://jonahback@gmail.com:jonaback2334@troup.mongohq.com:10072/ceasamb',
 
   sessionSecret: "Your Session Secret goes here",
 
