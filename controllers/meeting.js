@@ -49,6 +49,7 @@ exports.postMeeting = function(req,res) {
       attendees: []
     }).save();
   }
+  res.redirect('/meeting');
 }
 
 exports.postMNum = function(req, res) {
