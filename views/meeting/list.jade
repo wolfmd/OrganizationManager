@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Meeting List
+  if user
+    a(class="btn btn-primary" role="button" href="/meeting/add") Add New Meeting
+  table(class="table")
+    thead
+      tr
+       th Date
+       th Room
+       th Summary
+       th Sign In
+    tbody
+      each meeting in meetings
+        tr
+          td=meeting.date
+          td=meeting.room
+          td=meeting.summary
+          td
+            a(href="/meeting/#{meeting.id}") View
+
+  script(type='text/javascript').
+    $("table").tablesorter({sortList: [[0,0]]})

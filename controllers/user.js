@@ -63,7 +63,6 @@ exports.logout = function(req, res) {
  */
 
 exports.getSignup = function(req, res) {
-  if (req.user) return res.redirect('/');
   res.render('account/signup', {
     title: 'Create Account'
   });
@@ -88,6 +87,8 @@ exports.postSignup = function(req, res, next) {
     return res.redirect('/signup');
   }
 
+  console.log(req.body);
+
   var user = new User({
     email: req.body.email,
     password: req.body.password
@@ -95,6 +96,7 @@ exports.postSignup = function(req, res, next) {
 
   user.save(function(err) {
     if (err) {
+      console.log(err);
       if (err.code === 11000) {
         req.flash('errors', { msg: 'User with that email already exists.' });
       }

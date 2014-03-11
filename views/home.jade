@@ -1,8 +1,36 @@
 extends layout
 
 block content
-  h1 Bootstrap starter template
+  h1 CEAS Ambassadors Dashboard
   p.lead
-    | Use this document as a way to quickly start any new project.
-    br
-    | All you get is this text and a mostly barebones HTML document.
+    | We Engineer Better
+  h3 Upcoming Events
+  table(class="table")
+    thead
+      tr
+       th Title
+       th Start Time
+       th End Time
+       th Location
+       th Sign Up
+    tbody
+      each event in events
+        tr
+          td=event.title
+          td=event.starttime
+          td=event.endtime
+          td=event.location
+          td
+            a(href="/event/#{event.id}") Sign Up
+  h3 Next Meeting
+  table(class="table")
+    thead
+      tr
+       th Date
+       th Room
+       th Summary
+    tbody
+        tr
+          td=meeting.date
+          td=meeting.room
+          td=meeting.summary

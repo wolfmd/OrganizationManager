@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Member List
+  if user
+    a(class="btn btn-primary" role="button" href="/member/add") Add New Member
+  table(class="table")
+    thead
+      tr
+       th Last
+       th First
+       th Email
+       th Major
+       th Meetings
+    tbody
+      each member in members
+        tr
+          td=member.profile.lastName
+          td=member.profile.firstName
+          td=member.email
+          td=member.profile.major
+          td=member.meetings
+  script(type='text/javascript').
+    $("table").tablesorter({sortList: [[0,0]]})

@@ -24,6 +24,11 @@ var contactController = require('./controllers/contact');
 var forgotController = require('./controllers/forgot');
 var resetController = require('./controllers/reset');
 
+var memberController = require('./controllers/member');
+var meetingController = require('./controllers/meeting');
+var eventController = require('./controllers/event');
+var settingsController = require('./controllers/settings');
+
 /**
  * API keys + Passport configuration.
  */
@@ -45,6 +50,8 @@ mongoose.connect(secrets.db);
 mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
+
+
 
 /**
  * Express configuration.
@@ -98,6 +105,26 @@ app.use(express.errorHandler());
 /**
  * Application routes.
  */
+app.get('/member', memberController.getMembers);
+app.get('/member/add', passportConf.isAuthenticated, memberController.getAddMember)
+app.post('/member/add', passportConf.isAuthenticated, memberController.postMember);
+app.get('/member/lookup/:mnum', memberController.postMemberLookup);
+app.del('/member/:id', memberController.deleteMember);
+
+app.get('/meeting', meetingController.getMeeting);
+app.get('/meeting/add', passportConf.isAuthenticated, meetingController.getAddMeeting);
+app.post('/meeting/add', passportConf.isAuthenticated, meetingController.postMeeting);
+app.get('/meeting/:id', passportConf.isAuthenticated, meetingController.getMeeting);
+app.post('/meeting/:id', passportConf.isAuthenticated, meetingController.postMNum);
+
+app.get('/event', eventController.getEvents);
+app.get('/event/add',passportConf.isAuthenticated, eventController.addEvent);
+app.post('/event/add', eventController.postEvent);
+app.get('/event/:id', eventController.getEvent);
+app.post('/event/:id', eventController.postUpdate);
+app.get('/event/:id/:mnum', passportConf.isAuthenticated, eventController.postConfirmation);
+
+app.get('/settings',passportConf.isAuthenticated, settingsController.getSettings);
 
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
@@ -107,8 +134,8 @@ app.get('/forgot', forgotController.getForgot);
 app.post('/forgot', forgotController.postForgot);
 app.get('/reset/:token', resetController.getReset);
 app.post('/reset/:token', resetController.postReset);
-app.get('/signup', userController.getSignup);
-app.post('/signup', userController.postSignup);
+app.get('/signup',  userController.getSignup);
+app.post('/signup',  userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
@@ -146,7 +173,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', '
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { successRedirect: '/', failureRedirect: '/login' }));
-app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
+app.get('/auth/google', passport.authenticate('google', { scope: 'profile email https://www.googleapis.com/auth/calendar'}));
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/login' }));

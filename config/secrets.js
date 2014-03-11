@@ -29,7 +29,7 @@ module.exports = {
     secret: 'Your API Secret'
   },
 
-  facebookAuth: true,
+  facebookAuth: false,
   facebook: {
     clientID: 'Your App ID',
     clientSecret: 'Your App Secret',
@@ -37,7 +37,7 @@ module.exports = {
     passReqToCallback: true
   },
 
-  githubAuth: true,
+  githubAuth: false,
   github: {
     clientID: 'Your Client ID',
     clientSecret: 'Your Client Secret',
@@ -45,7 +45,7 @@ module.exports = {
     passReqToCallback: true
   },
 
-  twitterAuth: true,
+  twitterAuth: false,
   twitter: {
     consumerKey: 'Your Consumer Key',
     consumerSecret: 'Your Consumer Secret',
@@ -55,13 +55,13 @@ module.exports = {
 
   googleAuth: true,
   google: {
-    clientID: 'Your Client ID',
-    clientSecret: 'Your Client Secret',
+    clientID: '614859183439-vijq8slf8v6mem3trdjggnkrvpo06q4r.apps.googleusercontent.com',
+    clientSecret: 'TS4rbP-URubH8t19d9FJWBRg',
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
 
-  linkedinAuth: true,
+  linkedinAuth: false,
   linkedin: {
     clientID: 'Your Client ID',
     clientSecret: 'Your Client Secret',

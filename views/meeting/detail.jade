@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  h4 Meeting Date:#{meeting.date}
+  if meeting.date.toDateString() == new Date().toDateString()
+    form.form-horizontal(role='form', method='POST')
+      input(type='hidden', name='_csrf', value=token)
+      .form-group
+        label(class='col-sm-2 control-label', for='mnum') M#
+        .col-sm-8
+          input.form-control(placeholder='M0XXXXXXX', type='text', name='mnum', id='mnum', autofocus=true)
+      .form-group
+        .col-sm-offset-2.col-sm-7
+          button.btn.btn-success(type='submit')
+            i.fa.fa-check
+            | Sign In
+  h5 Attendees
+  table(class="table")
+    thead
+      tr
+       th First
+       th Last
+    tbody
+      each member in members
+        tr
+          td=member.profile.firstName
+          td=member.profile.lastName

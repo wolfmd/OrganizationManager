@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Event List
+  if user
+    a(class="btn btn-primary" role="button" href="/event/add") Add New Event
+  table(class="table")
+    thead
+      tr
+       th Event Title
+       th Start Time
+       th End Time
+       th Location
+       th Summary
+       th Details
+    tbody
+      each event in events
+        tr
+          td=event.title
+          td=event.starttime
+          td=event.endtime
+          td=event.location
+          td=event.summary
+          td
+            a(href="/event/#{event.id}") View
+
+  script(type='text/javascript').
+    $("table").tablesorter({sortList: [[0,0]]})
