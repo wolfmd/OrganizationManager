@@ -1,27 +1,26 @@
 extends layout
 
 block content
-  h1 CEAS Ambassadors Dashboard
-  p.lead
-    | We Engineer Better
-  h3 Upcoming Events
-  table(class="table")
-    thead
-      tr
-       th Title
-       th Start Time
-       th End Time
-       th Location
-       th Sign Up
-    tbody
-      each event in events
+  h1 #{organization}
+  if eventsEnabled
+    h3 Upcoming Events
+    table(class="table")
+      thead
         tr
-          td=event.title
-          td=event.starttime
-          td=event.endtime
-          td=event.location
-          td
-            a(href="/event/#{event.id}") Sign Up
+         th Title
+         th Start Time
+         th End Time
+         th Location
+         th Sign Up
+      tbody
+        each event in events
+          tr
+            td=event.title
+            td=event.starttime
+            td=event.endtime
+            td=event.location
+            td
+              a(href="/event/#{event.id}") Sign Up
   h3 Next Meeting
   table(class="table")
     thead

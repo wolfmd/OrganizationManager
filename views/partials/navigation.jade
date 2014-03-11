@@ -6,7 +6,7 @@
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='/') CEAS Ambassadors
+      a.navbar-brand(href='/') #{organization}
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         li(class=title=='Home'?'active':undefined)
@@ -15,8 +15,9 @@
           a(href='/member') Members
         li(class=title=='Meetings'?'active':undefined)
           a(href='/meeting') Meetings
-        li(class=title=='Events'?'active':undefined)
-          a(href='/event') Events
+        if eventsEnabled
+          li(class=title=='Events'?'active':undefined)
+            a(href='/event') Events
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)
