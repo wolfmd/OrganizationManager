@@ -62,6 +62,7 @@ exports.postEvent = function(req,res) {
     attendees: [],
     confirmed: []
   }).save();
+  res.redirect('/event');
 }
 
 exports.postUpdate = function(req, res) {
