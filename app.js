@@ -210,7 +210,7 @@ app.listen(app.get('port'), function() {
 
 Settings.findOne(function(err, settings) {
   app.locals.organization = settings.organizationName;
-  app.locals.eventsEnabled = settings.eventsEnabled;
+  app.locals.eventsEnabled = settings.eventsEnabled ? true : false;
 });
 
 app.locals.organization = 'CEAS Amb';
