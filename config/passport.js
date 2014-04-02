@@ -207,7 +207,7 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
     setting.calendarKey = accessToken;
     setting.save();
   })
-});
+}));
 
 /**
  * Sign in with LinkedIn.
