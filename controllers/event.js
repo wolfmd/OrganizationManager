@@ -1,6 +1,10 @@
 var Event = require('../models/Event')
 var Member = require('../models/Member')
+var Settings = require('../models/Settings')
 var async = require('async')
+var moment = require('moment');
+var gcal = require('google-calendar');
+
 exports.getEvents = function(req, res) {
   Event.find(function(err, events) {
     res.render('event/list',{
@@ -53,7 +57,7 @@ exports.addEvent = function(req, res) {
 }
 
 exports.postEvent = function(req,res) {
-  new Event({
+  var newEvent = new Event({
     title: req.body.title,
     starttime: new Date(req.body.starttime),
     endtime: new Date(req.body.endtime),
@@ -61,7 +65,33 @@ exports.postEvent = function(req,res) {
     summary: req.body.summary,
     attendees: [],
     confirmed: []
-  }).save();
+  });
+  newEvent.save();
+
+  Settings.findOne({}, function(err, setting) {
+    console.log("Setting calendar key");
+    console.log(err);
+    google_calendar = new gcal.GoogleCalendar(setting.calendarKey);
+
+    google_calendar.calendarList.list(function(err, calendarList) {
+      var params = {
+          start: {
+            dateTime: moment(req.body.starttime).format()
+          },
+          end: {
+            dateTime: moment(req.body.endtime).format()
+          },
+          summary: req.body.title,
+          description: req.body.summary
+      };
+        google_calendar.events.insert(calendarList.items[0].id, params, function(err, calEvent) {
+          console.log(calEvent.id)
+          newEvent.googleID = calEvent.id;
+          newEvent.save();
+        });
+      });
+  })
+
   res.redirect('/event');
 }
 
