@@ -10,7 +10,26 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
+var refresh = require('google-refresh-token');
+var Settings = require('./models/Settings');
 
+var refreshToken = function() {
+  console.log('refresh called');
+  Settings.findOne({}, function(err, settings) {
+    console.log(settings);
+
+    if(settings.refreshToken) {
+      refresh(settings.refreshToken, secrets.google.clientID, secrets.google.clientSecret, function(err, json, res) {
+        console.log(err)
+        console.log(json.accessToken);
+        settings.calendarKey = json.accessToken;
+        settings.save();
+      });
+    }
+  });
+  setTimeout(refreshToken, 1000*60*30)
+};
+refreshToken();
 
 
 /**
@@ -52,6 +71,8 @@ mongoose.connect(secrets.db);
 mongoose.connection.on('error', function() {
   console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.');
 });
+
+
 
 
 
@@ -176,7 +197,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', '
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { successRedirect: '/', failureRedirect: '/login' }));
-app.get('/auth/google', passport.authenticate('google', { scope: 'profile email https://www.googleapis.com/auth/calendar'}));
+app.get('/auth/google', passport.authenticate('google', { scope: 'profile email https://www.googleapis.com/auth/calendar', accessType: 'offline'}));
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/login' }));

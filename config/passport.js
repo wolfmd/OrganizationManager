@@ -205,6 +205,7 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
 passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refreshToken, profile, done) {
   Setting.findOne({}, function(err, setting) {
     setting.calendarKey = accessToken;
+    setting.refreshToken = refreshToken;
     setting.save();
   })
 }));
