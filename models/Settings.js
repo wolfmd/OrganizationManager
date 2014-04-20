@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var refresh = require('google-refresh-token');
+var secrets = require('../config/secrets');
 var settingsSchema = new mongoose.Schema({
   calendarKey: {type: String, unique: true, default: ''},
   refreshToken: {type: String, unique: true, default: ''},
