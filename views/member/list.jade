@@ -13,13 +13,19 @@ block content
        th Email
        th Major
        th Meetings
+       th Minutes
+       th Detail
     tbody
       each member in members
         tr
           td=member.profile.lastName
           td=member.profile.firstName
-          td=member.email
+          td
+            a(href="mailto:#{member.email}") #{member.email}
           td=member.profile.major
           td=member.meetings
+          td=member.service
+          td
+            a(href="/member/#{member.profile.mnum}") View
   script(type='text/javascript').
     $("table").tablesorter({sortList: [[0,0]]})

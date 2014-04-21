@@ -1,0 +1,74 @@
+extends ../layout
+
+block content
+  h4 Member: #{member.profile.firstName} #{member.profile.lastName}
+  h5 Total minutes of Service :
+    label(id="serviceMinutes") #{member.service}
+  button.btn.btn-success(data-toggle='modal', data-target='#myModal')
+    | Add Custom Service Event
+
+  h5 Service Events
+  table(class="table")
+    thead
+      tr
+       th Title
+       th Start Time
+       th End Time
+    tbody
+      each event in member.events
+        tr
+          td=event.title
+          td=event.starttime
+          td=event.endtime
+
+  #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h4#myModalLabel.modal-title Add Event
+          .modal-body
+            form.form-horizontal(id='event-form', method='POST')
+              input(type='hidden', name='_csrf', value=token)
+              .form-group
+                label.col-sm-3.control-label(for='email') Event Title
+                .col-sm-7.input_group
+                  input.form-control(class="form_datetime", type='text', name='title', id='title', placeholder='Organization Event', autofocus)
+              .form-group
+                label.col-sm-3.control-label(for='email') Starting Date/Time
+                .col-sm-7.input_group
+                  input.form-control(class="form_datetime", type='text', name='starttime', id='starttime', placeholder='31 December 1999 12:00 PM', autofocus)
+              .form-group
+                label.col-sm-3.control-label(for='email') Ending Date/Time
+                .col-sm-7.input_group
+                  input.form-control(class="form_datetime", type='text', name='endtime', id='endtime', placeholder='31 December 1999 12:00 PM ', autofocus)
+              .form-group
+                label.col-sm-3.control-label(for='summary') Summary
+                .col-sm-7
+                  input.form-control(type='text', name='summary', id='summary', placeholder='Lorem Ipsum')
+
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Close
+            button.btn.btn-success(type='submit', data-dismiss='modal', id="commentButton")
+              i.fa.fa-check
+              | Add Event
+  script.
+    $('#commentButton').on('click', function() {
+        var form = $('#event-form')[0];
+        var data = {};
+        for (var i = 0, ii = form.length; i < ii; ++i) {
+          var input = form[i];
+          if (input.name) {
+            data[input.name] = input.value;
+          }
+        }
+        $.ajax({
+          type: 'POST',
+          url: '#{member.mnum}',
+          data : data,
+          success: null,
+          dataType: 'json'
+        })
+        $('table tbody').append('<tr><td>' + data['title'] + '</td><td>' + new Date(data['starttime']) + '</td><td>' + new Date(data['endtime']) + '</td></tr>');
+        $('#serviceMinutes').html(Number($('#serviceMinutes').html()) + (moment(new Date(data['endtime'])).diff(new Date(data['starttime'])))/60000)
+      })

@@ -4,6 +4,7 @@ var Settings = require('../models/Settings')
 var async = require('async')
 var moment = require('moment');
 var gcal = require('google-calendar');
+var secrets = require('../config/secrets')
 
 exports.getEvents = function(req, res) {
   Event.find(function(err, events) {
@@ -106,6 +107,7 @@ exports.postUpdate = function(req, res) {
     event.save();
   });
 
+
   res.redirect('/event/' + id);
 
 }
@@ -116,6 +118,10 @@ exports.postConfirmation = function(req, res) {
 
   Event.findOne({_id:id}, function(err, event) {
     event.confirmed.push(mnum);
+    Member.findOne({"profile.mnum":mnum}, function(err, member) {
+      member.events.push(event);
+      member.save();
+    });
     var index = event.attendees.indexOf(mnum);
     if (index > -1)
       event.attendees.splice(index, 1);
