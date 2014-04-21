@@ -1,5 +1,8 @@
 var Member = require('../models/Member')
+var Event = require('../models/Event')
 var request = require('request');
+var moment = require('moment');
+var _ = require('underscore')
 exports.getMembers = function(req, res) {
   Member.find(function(err, members) {
     res.render('member/list', {
@@ -7,6 +10,37 @@ exports.getMembers = function(req, res) {
       members: members
     })
   });
+}
+
+exports.getMember = function(req, res) {
+  Member.findOne({"profile.mnum": req.params.id}, function(err, member) {
+    if(member) {
+      res.render('member/detail', {
+        title: "Member information",
+        member: member
+      })
+    }
+    else {
+      res.status(404);
+      res.render('404');
+    }
+  });
+}
+
+exports.addEvent = function(req, res) {
+  if(req.body.title && req.body.starttime && req.body.endtime) {
+    Member.findOne({"profile.mnum": req.params.id}, function(err, member) {
+      if(member) {
+        member.events.push(new Event({
+          title: req.body.title,
+          starttime: new Date(req.body.starttime),
+          endtime: new Date(req.body.endtime),
+        }));
+        member.save();
+      }
+    })
+  }
+  res.send(200);
 }
 
 exports.postMemberLookup = function(req, res) {

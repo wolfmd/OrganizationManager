@@ -132,6 +132,8 @@ app.get('/member', memberController.getMembers);
 app.get('/member/add', passportConf.isAuthenticated, memberController.getAddMember)
 app.post('/member/add', passportConf.isAuthenticated, memberController.postMember);
 app.get('/member/lookup/:mnum', memberController.postMemberLookup);
+app.get('/member/:id', memberController.getMember);
+app.post('/member/:id', memberController.addEvent)
 app.del('/member/:id', memberController.deleteMember);
 
 app.get('/meeting', meetingController.getMeeting);
@@ -197,7 +199,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', '
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { successRedirect: '/', failureRedirect: '/login' }));
-app.get('/auth/google', passport.authenticate('google', { scope: 'profile email https://www.googleapis.com/auth/calendar', accessType: 'offline'}));
+app.get('/auth/google', passport.authenticate('google', { scope: 'profile email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/glass.timeline', accessType: 'offline'}));
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/login' }));
