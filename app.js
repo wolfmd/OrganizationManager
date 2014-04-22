@@ -128,7 +128,7 @@ app.use(express.errorHandler());
 /**
  * Application routes.
  */
-app.get('/member', memberController.getMembers);
+app.get('/member', passportConf.isAuthenticated, memberController.getMembers);
 app.get('/member/add', passportConf.isAuthenticated, memberController.getAddMember)
 app.post('/member/add', passportConf.isAuthenticated, memberController.postMember);
 app.get('/member/lookup/:mnum', memberController.postMemberLookup);
