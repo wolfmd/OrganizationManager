@@ -132,9 +132,9 @@ app.get('/member', memberController.getMembers);
 app.get('/member/add', passportConf.isAuthenticated, memberController.getAddMember)
 app.post('/member/add', passportConf.isAuthenticated, memberController.postMember);
 app.get('/member/lookup/:mnum', memberController.postMemberLookup);
-app.get('/member/:id', memberController.getMember);
-app.post('/member/:id', memberController.addEvent)
-app.del('/member/:id', memberController.deleteMember);
+app.get('/member/:id', passportConf.isAuthenticated, memberController.getMember);
+app.post('/member/:id', passportConf.isAuthenticated, memberController.addEvent)
+app.del('/member/:id', passportConf.isAuthenticated, memberController.deleteMember);
 
 app.get('/meeting', meetingController.getMeeting);
 app.get('/meeting/add', passportConf.isAuthenticated, meetingController.getAddMeeting);
@@ -144,9 +144,9 @@ app.post('/meeting/:id', passportConf.isAuthenticated, meetingController.postMNu
 
 app.get('/event', eventController.getEvents);
 app.get('/event/add',passportConf.isAuthenticated, eventController.addEvent);
-app.post('/event/add', eventController.postEvent);
-app.get('/event/:id', eventController.getEvent);
-app.post('/event/:id', eventController.postUpdate);
+app.post('/event/add', passportConf.isAuthenticated, eventController.postEvent);
+app.get('/event/:id', passportConf.isAuthenticated, eventController.getEvent);
+app.post('/event/:id', passportConf.isAuthenticated, eventController.postUpdate);
 app.get('/event/:id/:mnum', passportConf.isAuthenticated, eventController.postConfirmation);
 
 app.get('/settings',passportConf.isAuthenticated, settingsController.getSettings);
