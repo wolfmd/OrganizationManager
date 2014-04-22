@@ -147,8 +147,8 @@ app.post('/meeting/:id', passportConf.isAuthenticated, meetingController.postMNu
 app.get('/event', eventController.getEvents);
 app.get('/event/add',passportConf.isAuthenticated, eventController.addEvent);
 app.post('/event/add', passportConf.isAuthenticated, eventController.postEvent);
-app.get('/event/:id', passportConf.isAuthenticated, eventController.getEvent);
-app.post('/event/:id', passportConf.isAuthenticated, eventController.postUpdate);
+app.get('/event/:id', eventController.getEvent);
+app.post('/event/:id', eventController.postUpdate);
 app.get('/event/:id/:mnum', passportConf.isAuthenticated, eventController.postConfirmation);
 
 app.get('/settings',passportConf.isAuthenticated, settingsController.getSettings);
