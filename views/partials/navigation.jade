@@ -11,9 +11,8 @@
       ul.nav.navbar-nav
         li(class=title=='Home'?'active':undefined)
           a(href='/') Home
-        if user
-          li(class=title=='Members'?'active':undefined)
-            a(href='/member') Members
+        li(class=title=='Members'?'active':undefined)
+          a(href='/member') Members
         li(class=title=='Meetings'?'active':undefined)
           a(href='/meeting') Meetings
         if eventsEnabled
