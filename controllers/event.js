@@ -119,7 +119,13 @@ exports.postConfirmation = function(req, res) {
   Event.findOne({_id:id}, function(err, event) {
     event.confirmed.push(mnum);
     Member.findOne({"profile.mnum":mnum}, function(err, member) {
-      member.events.push(event);
+      member.events.push({
+        title: event.title,
+        starttime: event.starttime,
+        endtime: event.endtime,
+        summary: event.summary,
+        location: event.location
+      });
       member.save();
     });
     var index = event.attendees.indexOf(mnum);
