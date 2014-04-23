@@ -14,6 +14,8 @@ block content
        th Location
        th Summary
        th Details
+       if user
+         th Delete
     tbody
       each event in events
         tr
@@ -24,6 +26,23 @@ block content
           td=event.summary
           td
             a(href="/event/#{event.id}") View
+          if user
+            td
+              span(class="glyphicon glyphicon-trash", onclick="del('#{event.id}', '#{event.title}')")
 
   script(type='text/javascript').
-    $("table").tablesorter({sortList: [[0,0]]})
+    $("table").tablesorter({sortList: [[0,0]]});
+  script(type='text/javascript').
+    del = function(eventid, eventtitle) {
+      if(confirm("Are you sure you want to delete " + eventtitle + '?')) {
+        $.ajax({
+            url: '/event/'+eventid,
+            type: 'DELETE',
+            data: {
+              _csrf:'#{token}'
+            },
+            success: $.noop,
+            error: $.noop
+        });
+      }
+    }

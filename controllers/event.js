@@ -57,6 +57,15 @@ exports.addEvent = function(req, res) {
 
 }
 
+exports.deleteEvent = function(req, res) {
+  if(req.params.id) {
+    Event.remove({_id: req.params.id}, function(err, event) {
+      console.log(err);
+    });
+  }
+
+}
+
 exports.postEvent = function(req,res) {
   var newEvent = new Event({
     title: req.body.title,
