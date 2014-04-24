@@ -15,7 +15,7 @@ block content
     tbody
       each meeting in meetings
         tr
-          td=meeting.date
+          td=moment(meeting.date).format('LLLL')
           td=meeting.room
           td=meeting.summary
           td
