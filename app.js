@@ -158,6 +158,8 @@ app.get('/event/:id/:mnum', passportConf.isAuthenticated, eventController.postCo
 app.get('/settings',passportConf.isAuthenticated, settingsController.getSettings);
 app.post('/settings', passportConf.isAuthenticated, settingsController.postSettings);
 
+app.post('/reset', passportConf.isAuthenticated, settingsController.resetData);
+
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
