@@ -18,8 +18,8 @@ block content
       each event in member.events
         tr
           td=event.title
-          td=event.starttime
-          td=event.endtime
+          td=moment(event.starttime).format('LLLL')
+          td=moment(event.endtime).format('LLLL')
 
   #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
     .modal-dialog

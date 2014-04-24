@@ -16,8 +16,8 @@ block content
         each event in events
           tr
             td=event.title
-            td=event.starttime
-            td=event.endtime
+            td=moment(event.starttime).format('LLLL')
+            td=moment(event.endtime).format('LLLL')
             td=event.location
             td
               a(href="/event/#{event.id}") Sign Up
@@ -29,7 +29,8 @@ block content
        th Room
        th Summary
     tbody
+      if meeting != ""
         tr
-          td=meeting.date
+          td=moment(meeting.date).format('LLLL')
           td=meeting.room
           td=meeting.summary

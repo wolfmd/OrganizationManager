@@ -12,6 +12,7 @@ var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 var refresh = require('google-refresh-token');
 var Settings = require('./models/Settings');
+var moment = require('moment');
 
 var refreshToken = function() {
   console.log('refresh called');
@@ -114,6 +115,7 @@ app.use(function(req, res, next) {
   res.locals.user = req.user;
   res.locals.token = req.csrfToken();
   res.locals.secrets = secrets;
+  res.locals.moment = moment;
   next();
 });
 app.use(flash());

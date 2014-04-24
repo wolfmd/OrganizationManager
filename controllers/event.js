@@ -10,7 +10,7 @@ exports.getEvents = function(req, res) {
   Event.find(function(err, events) {
     res.render('event/list',{
       title: "Events",
-      events:events
+      events:events,
     });
   });
 
