@@ -20,8 +20,8 @@ block content
       each event in events
         tr
           td=event.title
-          td=moment(event.starttime).format('LLLL')
-          td=moment(event.endtime).format('LLLL')
+          +dateRow(event.starttime)
+          +dateRow(event.endtime)
           td=event.location
           td=event.summary
           td

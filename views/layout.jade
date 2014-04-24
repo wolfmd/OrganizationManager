@@ -1,3 +1,8 @@
+mixin dateRow(day)
+  td
+    span(style="display:none") #{moment(day).format('YYYYMMDD')}
+    | #{moment(day).format('LLLL')}
+
 doctype html
 html
   head

@@ -152,6 +152,7 @@ app.post('/event/add', passportConf.isAuthenticated, eventController.postEvent);
 app.get('/event/:id', eventController.getEvent);
 app.post('/event/:id', eventController.postUpdate);
 app.del('/event/:id', passportConf.isAuthenticated, eventController.deleteEvent);
+app.get('/event/:id/:mnum/deny', passportConf.isAuthenticated, eventController.denyAttendance)
 app.get('/event/:id/:mnum', passportConf.isAuthenticated, eventController.postConfirmation);
 
 app.get('/settings',passportConf.isAuthenticated, settingsController.getSettings);

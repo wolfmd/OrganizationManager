@@ -121,9 +121,28 @@ exports.postUpdate = function(req, res) {
 
 }
 
+exports.denyAttendance = function(req, res) {
+  var id = req.params.id;
+  var mnum = req.params.mnum;
+
+
+  Event.findOne({_id:id}, function(err, evt) {
+    var index = evt.attendees.indexOf(mnum);
+    if (index > -1)
+      evt.attendees.splice(index, 1);
+    evt.save();
+  });
+
+  res.redirect('/event/' + id);
+}
+
 exports.postConfirmation = function(req, res) {
   var id = req.params.id;
   var mnum = req.params.mnum;
+
+  if(req.body.isDeny) {
+    console.log('deny');
+  }
 
   Event.findOne({_id:id}, function(err, event) {
     event.confirmed.push(mnum);

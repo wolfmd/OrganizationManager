@@ -23,6 +23,7 @@ block content
        th Last
        if user
          th Confirm Attendance
+         th No Show
     tbody
       each member in members
         tr
@@ -32,6 +33,9 @@ block content
             td
               a(href="/event/" + event.id + '/' + member.profile.mnum)
                 |Confirm
+            td
+              a(href="/event/" + event.id + '/' + member.profile.mnum + '/deny')
+                |Did Not Attend
   if user
     h5 Attended
     table(class="table")
