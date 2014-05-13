@@ -20,8 +20,11 @@ exports.getEvents = function(req, res) {
 exports.getEvent = function(req, res) {
   var id = req.params.id;
   Event.findOne({"_id":id}, function(err, event){
-      if(err)
+      if(err || !event) {
         res.render(404);
+	console.log("Error finding event with id:" + id);
+	console.log("err was:" + err);
+      }
       else {
         async.parallel([
           function(callback){
