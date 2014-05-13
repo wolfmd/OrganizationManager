@@ -16,6 +16,7 @@ block content
          th Meetings
          th Minutes
          th Detail
+         th Delete
     tbody
       each member in members
         tr
@@ -29,5 +30,23 @@ block content
             td=member.service
             td
               a(href="/member/#{member.profile.mnum}") View
-  script(type='text/javascript').
-    $("table").tablesorter({sortList: [[0,0]]})
+
+            td
+              span(class="glyphicon glyphicon-trash", onclick="del('#{member.profile.mnum}', '#{member.profile.firstName}')")
+
+    script(type='text/javascript').
+        $("table").tablesorter({sortList: [[0,0]]});
+    script(type='text/javascript').
+        del = function(eventid, eventtitle) {
+          if(confirm("Are you sure you want to delete " + eventtitle + '?')) {
+            $.ajax({
+                url: '/member/'+eventid,
+                type: 'DELETE',
+                data: {
+                  _csrf:'#{token}'
+                },
+                success: $.noop,
+                error: $.noop
+            });
+          }
+        }
