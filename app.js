@@ -242,6 +242,7 @@ app.listen(app.get('port'), function() {
 Settings.findOne(function(err, settings) {
   app.locals.organization = settings.organizationName;
   app.locals.eventsEnabled = settings.eventsEnabled ? true : false;
+  app.locals.minimumMinutes = settings.organizationMinutes;
 });
 
 app.locals.organization = 'CEAS Amb';
