@@ -20,10 +20,12 @@ exports.postSettings = function(req, res) {
   Settings.findOne(function(err, settings) {
     console.log(req.body);
     settings.organizationName = req.body.organizationName;
+    settings.organizationMinutes = req.body.organizationMinutes;
     settings.eventsEnabled = req.body.eventsEnabled == undefined ? false : true;
     settings.save();
     req.app.locals.organization = req.body.organizationName;
     req.app.locals.eventsEnabled = req.body.eventsEnabled;
+    req.app.locals.minimumMinutes = req.body.organizationMinutes;
     console.log(req.app.locals);
     res.redirect('/settings');
   })

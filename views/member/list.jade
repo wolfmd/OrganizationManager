@@ -5,6 +5,10 @@ block content
     h3 Member List
   if user
     a(class="btn btn-primary" role="button" href="/member/add") Add New Member
+    br
+    label(class="checkbox-inline") Highlight based on Service Requirement
+        input(type="checkbox", id="inlineCheckbox1", value="option1")
+
   table(class="table")
     thead
       tr
@@ -19,7 +23,7 @@ block content
          th Delete
     tbody
       each member in members
-        tr
+        tr(class=minimumMinutes>member.service ? 'fail' : 'pass')
           td=member.profile.lastName
           td=member.profile.firstName
           td
@@ -37,6 +41,17 @@ block content
     script(type='text/javascript').
         $("table").tablesorter({sortList: [[0,0]]});
     script(type='text/javascript').
+        var toggled = false;
+        $('input[type="checkbox"]').click(function(){
+            toggled = !toggled;
+            if(toggled) {
+                $('.pass').addClass('success');
+                $('.fail').addClass('danger');
+            } else {
+                $('.pass').removeClass('success');
+                $('.fail').removeClass('danger');
+            }
+        });
         del = function(eventid, eventtitle) {
           if(confirm("Are you sure you want to delete " + eventtitle + '?')) {
             $.ajax({

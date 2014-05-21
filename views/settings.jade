@@ -13,6 +13,10 @@ block content
       .col-sm-7
         input.form-control(value="#{settings.organizationName}",type='text', name='organizationName', id='organizationName', placeholder='Student Organization', autofocus)
     .form-group
+      label.col-sm-3.control-label(for='organizationMinutes') Service Hours
+      .col-sm-7
+          input.form-control(value="#{settings.organizationMinutes}",type='text', name='organizationMinutes', id='organizationMinutes', placeholder='360')
+    .form-group
       label.col-sm-3.control-label(for='organizationName') Events
       .col-sm-7
         if eventsEnabled
