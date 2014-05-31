@@ -18,7 +18,7 @@ block content
          th Delete
     tbody
       each event in events
-        tr
+        tr(class=moment(event.endtime)<moment(new Date()) ? 'danger' : 'success')
           td=event.title
           +dateRow(event.starttime)
           +dateRow(event.endtime)

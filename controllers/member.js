@@ -44,12 +44,17 @@ exports.addEvent = function(req, res) {
 }
 
 exports.postMemberLookup = function(req, res) {
-  console.log(req.params.mnum);
-  var requestString = 'http://tribunal.uc.edu/drupal6/student/checkin/lookup?ucid=' + req.params.mnum
-  console.log("request string is:" + requestString);
-  request(requestString, function(error, response, body) {
-    res.send(body);
-  })
+  if(req.query.isIso) {
+
+  }
+  else {
+      console.log(req.params.mnum);
+      var requestString = 'http://tribunal.uc.edu/drupal6/student/checkin/lookup?ucid=' + req.params.mnum
+      console.log("request string is:" + requestString);
+      request(requestString, function (error, response, body) {
+          res.send(body);
+      })
+  }
 }
 
 exports.postMember = function(req, res) {

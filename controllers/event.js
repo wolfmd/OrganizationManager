@@ -64,6 +64,7 @@ exports.deleteEvent = function(req, res) {
   if(req.params.id) {
     Event.remove({_id: req.params.id}, function(err, event) {
       console.log(err);
+      res.send(200);
     });
   }
 

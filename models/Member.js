@@ -9,7 +9,8 @@ var memberSchema = new mongoose.Schema({
     lastName: { type: String, default: '' },
     major: { type: String, default: '' },
     year: { type: Number, default: '' },
-    mnum: {type: String, default: '', unique: true}
+    mnum: {type: String, default: '', unique: true},
+    iso: {type: String, default: ''}
   },
 
   meetings: {type: Number, default: 0},
