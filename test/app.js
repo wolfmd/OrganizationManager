@@ -7,7 +7,14 @@ var Event = require('../models/Event');
 var Meeting = require('../models/Meeting');
 
 var csrf = "";
+
+
 describe('GET /', function() {
+
+  before(function(done) {
+    setTimeout(done, 4000);
+  });
+
   it('should return 200 OK', function(done) {
     server
       .get('/')
