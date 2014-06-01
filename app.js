@@ -101,6 +101,10 @@ app.use(express.session({
   store: new MongoStore({
     url: secrets.db,
     auto_reconnect: true
+  }, function(e) {
+    app.listen(app.get('port'), function() {
+      console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
+    });
   })
 }));
 app.use(express.csrf());
@@ -188,9 +192,6 @@ app.get('/auth/google/callback', passport.authenticate('google', { successRedire
  * Start Express server.
  */
 
-app.listen(app.get('port'), function() {
-  console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
-});
 
 Settings.findOne(function(err, settings) {
   app.locals.organization = settings.organizationName;
