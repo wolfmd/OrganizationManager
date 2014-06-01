@@ -18,7 +18,7 @@ var refreshToken = function() {
   console.log('refresh called');
   Settings.findOne({}, function(err, settings) {
 
-    if(settings.refreshToken) {
+    if(settings && settings.refreshToken) {
       refresh(settings.refreshToken, secrets.google.clientID, secrets.google.clientSecret, function(err, json, res) {
         settings.calendarKey = json.accessToken;
         settings.save();
@@ -105,6 +105,7 @@ app.use(express.session({
     app.listen(app.get('port'), function() {
       console.log("✔ Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
     });
+    app.isReady = true;
   })
 }));
 app.use(express.csrf());
