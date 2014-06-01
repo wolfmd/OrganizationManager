@@ -1,6 +1,7 @@
 var chai = require('chai');
 var should = chai.should();
 var User = require('../models/User');
+var Member = require('../models/Member');
 
 describe('User Model', function() {
   it('should create a new user', function(done) {
@@ -39,4 +40,18 @@ describe('User Model', function() {
       done();
     });
   });
+
+  it('should delete all users', function(done) {
+    User.remove({}, function(err) {
+      done();
+    })
+  })
+});
+
+describe('Member Model', function(done) {
+  it('should remove all Members', function(done) {
+    Member.remove({}, function(err) {
+      done();
+    })
+  })
 });

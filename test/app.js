@@ -36,22 +36,51 @@ describe('GET /csrf', function() {
 });
 
 
-describe('GET /login', function() {
-  it('should return 200 OK', function(done) {
+describe('Authentication', function() {
+
+
+
+  it('should get signup page', function(done) {
+    server
+      .get('/signup')
+      .expect(200, done);
+  })
+
+  it('should register user', function(done) {
+    server
+      .post('/signup')
+      .send({_csrf: csrf, email:'backjo@mail.uc.edu', password: 'jonaback2334', confirmPassword: 'jonaback2334'})
+      .expect(302, done);
+  });
+
+  it('should logout user', function(done) {
+    server
+      .get('/logout')
+      .expect(302, done);
+  })
+
+  it('should get login page', function(done) {
     server
       .get('/login')
       .expect(200, done);
   });
-});
 
-describe('POST /login', function() {
   it('should login successfully', function(done) {
     server
       .post('/login')
       .send({_csrf: csrf, email: 'backjo@mail.uc.edu', password: 'jonaback2334'})
-      .expect(302, done)
+      .expect(302, done);
   })
-})
+});
+
+describe('Member CRUD tests', function() {
+  it('should add a new member', function(done) {
+    server
+      .post('/member/add')
+      .send({_csrf: csrf, mnum:'M04297884', email: 'backjo@mail.uc.edu', firstName: 'Jonah', lastName: 'Back', major: 'Computer Science'})
+      .expect(302, done);
+  });
+});
 
 describe('Event CRUD tests', function() {
   var eventID = "";
@@ -129,7 +158,7 @@ describe('Meeting CRUD tests', function() {
 
   it('Should sign into meeting using cardswipe', function(done) {
     var ISO = "6015899400214891";
-    var mnum = "M04297884"
+    var mnum = "M04297884";
 
     server
       .post('/meeting/' + meetingID)
