@@ -195,9 +195,15 @@ app.get('/auth/google/callback', passport.authenticate('google', { successRedire
 
 
 Settings.findOne(function(err, settings) {
-  app.locals.organization = settings.organizationName;
-  app.locals.eventsEnabled = settings.eventsEnabled ? true : false;
-  app.locals.minimumMinutes = settings.organizationMinutes;
+  if(settings) {
+    app.locals.organization = settings.organizationName;
+    app.locals.eventsEnabled = settings.eventsEnabled ? true : false;
+    app.locals.minimumMinutes = settings.organizationMinutes;
+  } else {
+    app.locals.organization = "Test Organization";
+    app.locals.eventsEnabled = true;
+    app.locals.minimumMinutes = 360;
+  }
 });
 
 app.locals.organization = 'CEAS Amb';
