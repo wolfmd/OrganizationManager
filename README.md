@@ -1,4 +1,4 @@
-Hackathon Starter//Org manager
+Hackathon Starter//Organization manager
 =================
 A basic system for managing student organizations. Built for use at UC.
 
