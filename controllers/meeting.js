@@ -1,6 +1,8 @@
 var Meeting = require("../models/Meeting");
 var Member = require("../models/Member");
-var request = require('request')
+var request = require('request');
+var lookupService = require('../services/memberLookup');
+
 
 exports.getMeeting = function(req, res) {
 
@@ -57,32 +59,31 @@ exports.postMNum = function(req, res) {
   var iso = req.body.iso;
   var errorOccurred = false;
   if(iso) {
-    var requestString = 'http://tribunal.uc.edu/drupal6/student/checkin/lookup?iso=' + iso;
-    request(requestString, function (error, response, body) {
-      body = JSON.parse(body);
-      if(body && !body.error) {
-        Member.findOne({'profile.firstName': body.first, 'profile.lastName': body.last}, function(err, member) {
+    lookupService.lookupByIso(iso, function(err, body) {
+      if (body && !body.error) {
+        Member.findOne({'profile.firstName': body.first_name, 'profile.lastName': body.last_name}, function (err, member) {
 
-          if(member) {
+          if (member) {
             member.meetings = member.meetings + 1;
             member.iso = iso;
             member.save();
 
-            Meeting.findOne({_id:id}, function(err, meeting) {
+            Meeting.findOne({_id: id}, function (err, meeting) {
               meeting.attendees.push(member.profile.mnum);
               meeting.save();
-              res.redirect('/meeting/'+id);
+              res.redirect('/meeting/' + id);
             });
           } else {
-            res.json({error:true, message: 'Member failed'});
+            res.json({error: true, message: 'Member failed'});
           }
         })
       } else {
-        res.json({error:true, message: 'Could not lookup ISO number'});
+        res.json({error: true, message: 'Could not lookup ISO number'});
       }
-    })
+    });
+  } else if(mnum) {
+
   } else {
     res.json({error:true, message: 'No ISO number given'});
   }
-
-}
+};

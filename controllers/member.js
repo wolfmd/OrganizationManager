@@ -2,7 +2,10 @@ var Member = require('../models/Member')
 var Event = require('../models/Event')
 var request = require('request');
 var moment = require('moment');
-var _ = require('underscore')
+var _ = require('underscore');
+
+var lookupService = require('../services/memberLookup');
+
 exports.getMembers = function(req, res) {
   Member.find(function(err, members) {
     res.render('member/list', {
@@ -48,11 +51,9 @@ exports.postMemberLookup = function(req, res) {
 
   }
   else {
-      console.log(req.params.mnum);
-      var requestString = 'http://tribunal.uc.edu/drupal6/student/checkin/lookup?ucid=' + req.params.mnum
-      console.log("request string is:" + requestString);
-      request(requestString, function (error, response, body) {
-          res.send(body);
+
+      lookupService.lookupByUcid(req.params.mnum, function(err, member) {
+        res.send(member);
       })
   }
 }

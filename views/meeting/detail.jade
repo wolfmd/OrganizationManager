@@ -3,7 +3,7 @@ extends ../layout
 block content
   h4 Meeting Date:#{meeting.date}
   if meeting.date.toDateString() == new Date().toDateString()
-    form.form-horizontal(role='form', method='POST')
+    form.form-horizontal(id="signIn", role='form', method='POST', onsubmit="onSubmitISO()")
       input(type='hidden', name='_csrf', value=token)
       .form-group
         label(class='col-sm-2 control-label', for='mnum') M#
@@ -29,3 +29,17 @@ block content
         tr
           td=member.profile.firstName
           td=member.profile.lastName
+  script.
+    $('#signIn').submit(function(evt) {
+      evt.preventDefault();
+      var re1='.*?';	// Non-greedy match on filler
+      var re2='(\\d+)';	// Integer Number 1
+
+      var p = new RegExp(re1+re2,["i"]);
+      var m = p.exec($('#iso').val());
+      if (m != null)
+      {
+          var int1=m[1];
+          alert(int1);
+      }
+    });
