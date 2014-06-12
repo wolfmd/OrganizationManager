@@ -3,7 +3,7 @@ extends ../layout
 block content
   h4 Meeting Date:#{meeting.date}
   if meeting.date.toDateString() == new Date().toDateString()
-    form.form-horizontal(id="signIn", role='form', method='POST', onsubmit="onSubmitISO()")
+    form.form-horizontal(id="signIn", role='form', method='POST')
       input(type='hidden', name='_csrf', value=token)
       .form-group
         label(class='col-sm-2 control-label', for='mnum') M#
@@ -37,9 +37,27 @@ block content
 
       var p = new RegExp(re1+re2,["i"]);
       var m = p.exec($('#iso').val());
-      if (m != null)
+      if (m != null || true)
       {
-          var int1=m[1];
-          alert(int1);
+          var int1 = "";
+          if(m) {
+            int1=m[1];
+          }
+
+          $.ajax({
+            url: "/meeting/#{meeting.id}",
+            type: "POST",
+            data: {
+              iso: int1,
+              mnum: $("#mnum").val(),
+              _csrf: "#{token}"
+            }
+          }).done(function(data) {
+            if(data.error) {
+              alert(data.message);
+            } else {
+              location.reload();
+            }
+          })
       }
     });

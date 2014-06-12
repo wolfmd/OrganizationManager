@@ -58,31 +58,43 @@ exports.postMNum = function(req, res) {
   var mnum = req.body.mnum;
   var iso = req.body.iso;
   var errorOccurred = false;
-  if(iso) {
-    lookupService.lookupByIso(iso, function(err, body) {
-      if (body && !body.error) {
-        Member.findOne({'profile.firstName': body.first_name, 'profile.lastName': body.last_name}, function (err, member) {
 
-          if (member) {
-            member.meetings = member.meetings + 1;
-            member.iso = iso;
-            member.save();
+  var saveMember = function(err, body) {
+    if(err) {
+      res.json({error: true, message: err});
+    }
 
-            Meeting.findOne({_id: id}, function (err, meeting) {
+    if (body && !err) {
+      Member.findOne({'profile.firstName': body.first_name, 'profile.lastName': body.last_name}, function (err, member) {
+        if (member) {
+
+          Meeting.findOne({_id: id}, function (err, meeting) {
+            if(meeting.attendees.indexOf(member.profile.mnum) === -1) {
+              member.meetings = member.meetings + 1;
+              member.iso = iso;
+              member.save();
+
               meeting.attendees.push(member.profile.mnum);
               meeting.save();
-              res.redirect('/meeting/' + id);
-            });
-          } else {
-            res.json({error: true, message: 'Member failed'});
-          }
-        })
-      } else {
-        res.json({error: true, message: 'Could not lookup ISO number'});
-      }
-    });
-  } else if(mnum) {
 
+            }
+
+            res.redirect('/meeting/' + id);
+
+          });
+        } else {
+          res.json({error: true, message: 'Member failed'});
+        }
+      })
+    } else {
+      res.json({error: true, message: 'Could not lookup ISO number'});
+    }
+  }
+
+  if(iso) {
+    lookupService.lookupByIso(iso, saveMember);
+  } else if(mnum) {
+    lookupService.lookupByUcid(mnum, saveMember);
   } else {
     res.json({error:true, message: 'No ISO number given'});
   }
