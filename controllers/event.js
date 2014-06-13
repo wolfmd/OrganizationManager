@@ -64,6 +64,7 @@ exports.deleteEvent = function(req, res) {
   if(req.params.id) {
     Event.remove({_id: req.params.id}, function(err, event) {
       console.log(err);
+      res.send(200);
     });
   }
 
@@ -84,27 +85,29 @@ exports.postEvent = function(req,res) {
   Settings.findOne({}, function(err, setting) {
     console.log("Setting calendar key");
     console.log(err);
-    setting.getAccessToken(function(accessToken) {
+    if(setting) {
+      setting.getAccessToken(function (accessToken) {
         google_calendar = new gcal.GoogleCalendar(accessToken);
         console.log(accessToken);
-        google_calendar.calendarList.list(function(err, calendarList) {
+        google_calendar.calendarList.list(function (err, calendarList) {
           var params = {
-              start: {
-                dateTime: moment(req.body.starttime).format()
-              },
-              end: {
-                dateTime: moment(req.body.endtime).format()
-              },
-              summary: req.body.title,
-              description: req.body.summary
+            start: {
+              dateTime: moment(req.body.starttime).format()
+            },
+            end: {
+              dateTime: moment(req.body.endtime).format()
+            },
+            summary: req.body.title,
+            description: req.body.summary
           };
-            google_calendar.events.insert(calendarList.items[0].id, params, function(err, calEvent) {
-              console.log(calEvent.id)
-              newEvent.googleID = calEvent.id;
-              newEvent.save();
-            });
+          google_calendar.events.insert(calendarList.items[0].id, params, function (err, calEvent) {
+            console.log(calEvent.id)
+            newEvent.googleID = calEvent.id;
+            newEvent.save();
           });
-    })
+        });
+      })
+    }
   })
 
   res.redirect('/event');

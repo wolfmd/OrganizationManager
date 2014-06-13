@@ -9,6 +9,8 @@ var Meeting = require('../models/Meeting');
 
 exports.getSettings = function(req, res) {
   Settings.findOne(function(err, settings){
+    if(!settings)
+      settings = new Settings();
     res.render('settings', {
       title: req.app.locals.organization,
       settings: settings
@@ -18,7 +20,8 @@ exports.getSettings = function(req, res) {
 
 exports.postSettings = function(req, res) {
   Settings.findOne(function(err, settings) {
-    console.log(req.body);
+    if(!settings)
+      settings = new Settings();
     settings.organizationName = req.body.organizationName;
     settings.organizationMinutes = req.body.organizationMinutes;
     settings.eventsEnabled = req.body.eventsEnabled == undefined ? false : true;
