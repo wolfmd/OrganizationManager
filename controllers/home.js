@@ -19,6 +19,12 @@ exports.index = function(req, res) {
     },
     function(callback){
         Meeting.find({$query: {date: {$gte: start}}, $orderby: {date:1}}, function(err, meetings) {
+          if(err) {
+            console.log(err);
+          }
+          if(!meetings) {
+            meetings = [];
+          }
           callback(null, meetings[0]);
         })
     }
