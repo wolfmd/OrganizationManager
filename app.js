@@ -171,6 +171,11 @@ app.post('/settings', passportConf.isAuthenticated, settingsController.postSetti
 app.post('/reset', passportConf.isAuthenticated, settingsController.resetData);
 
 app.get('/', homeController.index);
+app.get('/apply', function(req, res) {
+    res.render('apply', {
+        title: 'Apply'
+    })
+})
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
