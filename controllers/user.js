@@ -185,26 +185,3 @@ exports.postDeleteAccount = function(req, res, next) {
     res.redirect('/');
   });
 };
-
-/**
- * GET /account/unlink/:provider
- * Unlink OAuth2 provider from the current user.
- * @param provider
- * @param id - User ObjectId
- */
-
-exports.getOauthUnlink = function(req, res, next) {
-  var provider = req.params.provider;
-  User.findById(req.user.id, function(err, user) {
-    if (err) return next(err);
-
-    user[provider] = undefined;
-    user.tokens = _.reject(user.tokens, function(token) { return token.kind === provider; });
-
-    user.save(function(err) {
-      if (err) return next(err);
-      req.flash('info', { msg: provider + ' account has been unlinked.' });
-      res.redirect('/account');
-    });
-  });
-};

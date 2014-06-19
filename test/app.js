@@ -8,6 +8,8 @@ var Meeting = require('../models/Meeting');
 
 var csrf = "";
 
+var memberLookup = require('../services/memberLookup');
+
 
 describe('GET /', function() {
 
@@ -37,9 +39,6 @@ describe('GET /csrf', function() {
 
 
 describe('Authentication', function() {
-
-
-
   it('should get signup page', function(done) {
     server
       .get('/signup')
@@ -184,6 +183,23 @@ describe('Meeting CRUD tests', function() {
     });
   })
 
+});
 
 
+describe('Lookup Service Tests', function() {
+  it('Lookup by ISO', function(done) {
+    memberLookup.lookupByIso('6015899400214891', function(err, member) {
+      assert.equal(member.first_name, 'Jonah', 'First name should be Jonah');
+      assert.equal(member.last_name, 'Back', 'Last name should be Back');
+      done(err);
+    });
+  });
+
+  it('Lookup by UCID', function(done) {
+    memberLookup.lookupByUcid('M04297884', function(err, member) {
+      assert.equal(member.first_name, 'Jonah', 'First name should be Jonah');
+      assert.equal(member.last_name, 'Back', 'Last name should be Back');
+      done(err);
+    })
+  })
 });

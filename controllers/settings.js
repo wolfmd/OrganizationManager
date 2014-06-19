@@ -9,10 +9,8 @@ var Meeting = require('../models/Meeting');
 
 exports.getSettings = function(req, res) {
   Settings.findOne(function(err, settings){
-    if(!settings)
-      settings = new Settings();
     res.render('settings', {
-      title: req.app.locals.organization,
+      title: settings.organizationName,
       settings: settings
     });
   });
@@ -20,19 +18,18 @@ exports.getSettings = function(req, res) {
 
 exports.postSettings = function(req, res) {
   Settings.findOne(function(err, settings) {
-    if(!settings)
-      settings = new Settings();
     settings.organizationName = req.body.organizationName;
     settings.organizationMinutes = req.body.organizationMinutes;
     settings.eventsEnabled = req.body.eventsEnabled == undefined ? false : true;
-    settings.save();
-    req.app.locals.organization = req.body.organizationName;
-    req.app.locals.eventsEnabled = req.body.eventsEnabled;
-    req.app.locals.minimumMinutes = req.body.organizationMinutes;
-    console.log(req.app.locals);
-    res.redirect('/settings');
-  })
-}
+    settings.save(function(err) {
+      req.app.locals.organization = req.body.organizationName;
+      req.app.locals.eventsEnabled = req.body.eventsEnabled;
+      req.app.locals.minimumMinutes = req.body.organizationMinutes;
+      console.log(req.app.locals);
+      res.redirect('/settings');
+    });
+  });
+};
 
 exports.resetData = function(req, res) {
   res.send(200);

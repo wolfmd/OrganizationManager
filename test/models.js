@@ -2,6 +2,8 @@ var chai = require('chai');
 var should = chai.should();
 var User = require('../models/User');
 var Member = require('../models/Member');
+var Election = require('../models/Election');
+var BallotItem = require('../models/BallotItem');
 
 describe('User Model', function() {
   it('should create a new user', function(done) {
@@ -41,17 +43,41 @@ describe('User Model', function() {
     });
   });
 
-  it('should delete all users', function(done) {
-    User.remove({}, function(err) {
-      done();
-    })
-  })
 });
 
-describe('Member Model', function(done) {
-  it('should remove all Members', function(done) {
-    Member.remove({}, function(err) {
-      done();
-    })
-  })
-});
+describe('Election Model', function(done) {
+  it('should create an Election', function(done){
+
+    var president = new BallotItem({
+      title: "President",
+      choices: [
+        {
+          title: 'Thad',
+          description: 'Thad is prezident',
+          votes: []
+        },
+        {
+          title: 'Kerry',
+          description: 'Kerry aint prez',
+          votes: []
+        }
+      ]
+    });
+    president.save(function(err) {
+        console.log(err);
+        var elect = new Election({
+          title: "Test Election",
+          ballotItems: [president.id]
+        }).save(function(err2) {
+            Election.findOne({}).populate('ballotItems').exec(function(err, electionResult) {
+              console.log(electionResult.ballotItems[0].choices[0]);
+              electionResult.ballotItems[0].vote('Thad', 'hi');
+              electionResult.ballotItems[0].save();
+              console.log(electionResult.results());
+              //console.log(electionResult.ballotItems[0].choices[0]);
+              done();
+            });
+          })
+      });
+  });
+})

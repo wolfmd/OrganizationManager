@@ -48,13 +48,12 @@ exports.addEvent = function(req, res) {
 
 exports.postMemberLookup = function(req, res) {
   if(req.query.isIso) {
-
+    //TODO ISO lookup
   }
   else {
-
-      lookupService.lookupByUcid(req.params.mnum, function(err, member) {
-        res.send(member);
-      })
+    lookupService.lookupByUcid(req.params.mnum, function(err, member) {
+      res.send(member);
+    })
   }
 }
 
@@ -76,7 +75,6 @@ exports.postMember = function(req, res) {
 }
 
 exports.deleteMember = function(req, res) {
-  console.log("deleting : " + req.params.id);
   var mnum = req.params.id;
   Member.remove({"profile.mnum": mnum}, function(err) {
     console.log(err);
