@@ -1,0 +1,67 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Member List
+  if user
+    a(class="btn btn-primary" role="button" href="/member/add") Add New Member
+    br
+    label(class="checkbox-inline") Highlight based on Service Requirement
+        input(type="checkbox", id="inlineCheckbox1", value="option1")
+
+  table(class="table")
+    thead
+      tr
+       th Last
+       th First
+       th Email
+       th Major
+       if user
+         th Meetings
+         th Minutes
+         th Detail
+         th Delete
+    tbody
+      each member in members
+        tr(class=minimumMinutes>member.service ? 'fail' : 'pass')
+          td=member.profile.lastName
+          td=member.profile.firstName
+          td
+            a(href="mailto:#{member.email}") #{member.email}
+          td=member.profile.major
+          if user
+            td=member.meetings
+            td=member.service
+            td
+              a(href="/member/#{member.profile.mnum}") View
+
+            td
+              span(class="glyphicon glyphicon-trash", onclick="del('#{member.profile.mnum}', '#{member.profile.firstName}')")
+
+    script(type='text/javascript').
+        $("table").tablesorter({sortList: [[0,0]]});
+    script(type='text/javascript').
+        var toggled = false;
+        $('input[type="checkbox"]').click(function(){
+            toggled = !toggled;
+            if(toggled) {
+                $('.pass').addClass('success');
+                $('.fail').addClass('danger');
+            } else {
+                $('.pass').removeClass('success');
+                $('.fail').removeClass('danger');
+            }
+        });
+        del = function(eventid, eventtitle) {
+          if(confirm("Are you sure you want to delete " + eventtitle + '?')) {
+            $.ajax({
+                url: '/member/'+eventid,
+                type: 'DELETE',
+                data: {
+                  _csrf:'#{token}'
+                },
+                success: $.noop,
+                error: $.noop
+            });
+          }
+        }
