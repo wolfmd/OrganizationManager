@@ -32,10 +32,10 @@ describe "GET /csrf", ->
   return
 
 describe "Authentication", ->
-  it "should get signup page", (done) ->
-    server.get("/signup").expect 200, done
+  it "should not get signup page", (done) ->
+    server.get("/user/add").expect 403, done
     return
-
+  ###
   it "should register user", (done) ->
     server.post("/signup").send(
       _csrf: csrf
@@ -44,6 +44,8 @@ describe "Authentication", ->
       confirmPassword: "jonaback2334"
     ).expect 302, done
     return
+
+  ###
 
   it "should logout user", (done) ->
     server.get("/logout").expect 302, done
